@@ -61,6 +61,8 @@ public class CacheAffinityEarlyTest extends GridCommonAbstractTest {
     @Override protected IgniteConfiguration getConfiguration(String gridName) throws Exception {
         IgniteConfiguration cfg = super.getConfiguration(gridName);
 
+        cfg.setPeerClassLoadingEnabled(false);
+
         TcpDiscoverySpi discoSpi = new TcpDiscoverySpi();
         discoSpi.setIpFinder(ipFinder);
 
@@ -108,6 +110,8 @@ public class CacheAffinityEarlyTest extends GridCommonAbstractTest {
 
             IgniteInternalFuture<?> fut = multithreadedAsync(new Runnable() {
                 @Override public void run() {
+                    Thread.currentThread().setName("thread-" + idx);
+
                     Random rnd = new Random();
 
                     try {
